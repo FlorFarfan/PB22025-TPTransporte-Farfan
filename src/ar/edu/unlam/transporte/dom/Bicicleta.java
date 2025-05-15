@@ -1,87 +1,32 @@
 package ar.edu.unlam.transporte.dom;
 
-import java.util.ArrayList;
+public class Bicicleta extends Vehiculo{
 
-public class Bicicleta {
-
-	private double maxCapacidadDePeso;
-	private double maxCapacidadDeVolumen;
-	private Destino destino;
-	private ArrayList<Paquete> paquetes;
 	private final int maxCantidadDePaquetes = 2;
-	private double capacidadDePesoActual = 0;
-	private double capacidadDeVolumenActual = 0;
 	
-	public Bicicleta() {
+	public Bicicleta(int codigo) {
+		super(codigo);
 		this.maxCapacidadDePeso = 15;
-		this.maxCapacidadDeVolumen = 125000;
-		this.paquetes = new ArrayList<Paquete>();
+	    this.maxCapacidadDeVolumen = 125000;
+	    this.maxCantidadDeDestinos = 1;
 	}
 	
-	public Bicicleta(Destino destino) {
-		this.maxCapacidadDePeso = 15;
-		this.maxCapacidadDeVolumen = 125000;
-		this.destino = destino;
-		this.paquetes = new ArrayList<Paquete>();
-	}
-
-	public boolean agregarPaqueteABicicleta(Paquete paquete) {
-		if(this.paquetes.size() < maxCantidadDePaquetes && this.destino == paquete.getDestino()
-				&& maxCapacidadDePeso >= paquete.getPeso() && 
-				maxCapacidadDeVolumen >= paquete.getVolumen()) {
-			setCapacidadDePesoActual(this.capacidadDePesoActual + paquete.getPeso());
-			setCapacidadDeVolumenActual(this.capacidadDeVolumenActual + paquete.getVolumen());
-			
-			return this.paquetes.add(paquete);
+	public void noTieneDestinoAsignado(Paquete paquete) {
+		if(this.destinos == null) {
+			destinos.add(paquete.getDestino());
 		}
-		else if(this.destino != paquete.getDestino()) {
-			return false;
-			
-		} else if(this.paquetes.size() == maxCantidadDePaquetes) {
-			return false;
-			
+	}
+	
+	@Override
+	public boolean sePuedeAgregarPaqueteAVehiculo(Paquete paquete) {
+		noTieneDestinoAsignado(paquete);
+		if(this.destinos.contains(paquete.getDestino()) && 
+				this.paquetes.size() < maxCantidadDePaquetes &&
+				maxCapacidadDePeso >= (paquete.getPeso() + capacidadDePesoActual) &&
+				maxCapacidadDeVolumen >= (paquete.getVolumen() + capacidadDeVolumenActual)) {
+			return true;
 		}
 		return false;
-	}
-	
-	public double getCapacidadDePesoActual() {
-		return capacidadDePesoActual;
-	}
-
-	public void setCapacidadDePesoActual(double capacidadDePesoActual) {
-		this.capacidadDePesoActual = capacidadDePesoActual;
-	}
-
-	public double getCapacidadDeVolumenActual() {
-		return capacidadDeVolumenActual;
-	}
-
-	public void setCapacidadDeVolumenActual(double capacidadDeVolumenActual) {
-		this.capacidadDeVolumenActual = capacidadDeVolumenActual;
-	}
-
-	public double getMaxCapacidadDePeso() {
-		return maxCapacidadDePeso;
-	}
-
-	public void setMaxCapacidadDePeso(double maxCapacidadDePeso) {
-		this.maxCapacidadDePeso = maxCapacidadDePeso;
-	}
-
-	public double getMaxCapacidadDeVolumen() {
-		return maxCapacidadDeVolumen;
-	}
-
-	public void setMaxCapacidadDeVolumen(double maxCapacidadDeVolumen) {
-		this.maxCapacidadDeVolumen = maxCapacidadDeVolumen;
-	}
-
-	public Destino getDestino() {
-		return destino;
-	}
-
-	public void setDestino(Destino destino) {
-		this.destino = destino;
 	}
 	
 }

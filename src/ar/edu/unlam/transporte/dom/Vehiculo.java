@@ -1,39 +1,115 @@
 package ar.edu.unlam.transporte.dom;
 
-public class Vehiculo {
+import java.util.HashSet;
+import java.util.Set;
 
-	private double maxCapacidad;
-	private double maxPeso;
-	private int cantCiudadesQueRecorre;
+public abstract class Vehiculo {
+
+	protected int codigo;
+	protected double maxCapacidadDeVolumen;
+	protected double maxCapacidadDePeso;
+	protected int maxCantidadDeDestinos;
+	protected Set<Destino> destinos;
+	protected Set<Paquete> paquetes;
+	protected double capacidadDePesoActual;
+	protected double capacidadDeVolumenActual;
 	
-	public Vehiculo(double maxCapacidad, double maxPeso, int cantCiudadesQueRecorre) {
-		this.maxCapacidad = maxCapacidad;
-		this.maxPeso = maxPeso;
-		this.cantCiudadesQueRecorre = cantCiudadesQueRecorre;
+	public Vehiculo(int codigo) {
+		this.codigo = codigo;
+		this.destinos = new HashSet<Destino>();
+		this.paquetes = new HashSet<Paquete>();
+		this.capacidadDePesoActual = 0;
+		this.capacidadDeVolumenActual = 0;
 	}
 
-	public double getMaxCapacidad() {
-		return maxCapacidad;
+	public boolean agregarDestinoAVehiculo(Destino destino) {
+		if(this.destinos.size() < maxCantidadDeDestinos) {
+			return this.destinos.add(destino);
+		}
+		return false;
+	}
+	
+	public boolean agregarPaqueteAVehiculo(Paquete paquete) {
+		if(sePuedeAgregarPaqueteAVehiculo(paquete)) {
+			setCapacidadDePesoActual(this.capacidadDePesoActual + paquete.getPeso());
+			setCapacidadDeVolumenActual(this.capacidadDeVolumenActual + paquete.getVolumen());
+			
+			return this.paquetes.add(paquete);
+		}
+		return false;
+	}
+	
+	public boolean sePuedeAgregarPaqueteAVehiculo(Paquete paquete) {
+		if(this.destinos.contains(paquete.getDestino()) && 
+				maxCapacidadDePeso >= (paquete.getPeso() + capacidadDePesoActual) &&
+				maxCapacidadDeVolumen >= (paquete.getVolumen() + capacidadDeVolumenActual)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public double getMaxCapacidadDeVolumen() {
+		return maxCapacidadDeVolumen;
 	}
 
-	public void setMaxCapacidad(double maxCapacidad) {
-		this.maxCapacidad = maxCapacidad;
+	public void setMaxCapacidadDeVolumen(double maxCapacidadDeVolumen) {
+		this.maxCapacidadDeVolumen = maxCapacidadDeVolumen;
 	}
 
-	public double getMaxPeso() {
-		return maxPeso;
+	public double getMaxCapacidadDePeso() {
+		return maxCapacidadDePeso;
 	}
 
-	public void setMaxPeso(double maxPeso) {
-		this.maxPeso = maxPeso;
+	public void setMaxCapacidadDePeso(double maxCapacidadDePeso) {
+		this.maxCapacidadDePeso = maxCapacidadDePeso;
 	}
 
-	public int getCantCiudadesQueRecorre() {
-		return cantCiudadesQueRecorre;
+	public int getMaxCantidadDeDestinos() {
+		return maxCantidadDeDestinos;
 	}
 
-	public void setCantCiudadesQueRecorre(int cantCiudadesQueRecorre) {
-		this.cantCiudadesQueRecorre = cantCiudadesQueRecorre;
+	public void setMaxCantidadDeDestinos(int cantCiudadesQueRecorre) {
+		this.maxCantidadDeDestinos = cantCiudadesQueRecorre;
+	}
+
+	public int getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
+
+	public Set<Destino> getDestinos() {
+		return destinos;
+	}
+
+	public void setDestinos(Set<Destino> destinos) {
+		this.destinos = destinos;
+	}
+
+	public Set<Paquete> getPaquetes() {
+		return paquetes;
+	}
+
+	public void setPaquetes(Set<Paquete> paquetes) {
+		this.paquetes = paquetes;
+	}
+
+	public double getCapacidadDePesoActual() {
+		return capacidadDePesoActual;
+	}
+
+	public void setCapacidadDePesoActual(double capacidadDePesoActual) {
+		this.capacidadDePesoActual = capacidadDePesoActual;
+	}
+
+	public double getCapacidadDeVolumenActual() {
+		return capacidadDeVolumenActual;
+	}
+
+	public void setCapacidadDeVolumenActual(double capacidadDeVolumenActual) {
+		this.capacidadDeVolumenActual = capacidadDeVolumenActual;
 	}
 	
 }

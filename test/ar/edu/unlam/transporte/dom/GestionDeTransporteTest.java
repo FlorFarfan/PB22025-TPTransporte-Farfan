@@ -11,62 +11,75 @@ public class GestionDeTransporteTest {
 	@Test
 	public void agregarVehiculoExitoso() {
 		GestionDeTransporte gestion = new GestionDeTransporte();
-		Bicicleta bici = new Bicicleta();
+		Vehiculo bici = new Bicicleta(1);
 		
-		assertTrue(gestion.agregarBicicleta(bici));
+		assertTrue(gestion.agregarVehiculo(bici));
 	}
 	
 	@Test
 	public void agregarPaqueteExitosoABicicleta() {
 		GestionDeTransporte gestion = new GestionDeTransporte();
-		Bicicleta bici = new Bicicleta();
-		gestion.agregarBicicleta(bici);
-		Destino destino1 = new Destino("Madero");
-		Paquete paquete = new Paquete(7, 5, 6, 6, destino1);
-		bici.setDestino(paquete.getDestino());
+		Vehiculo bici = new Bicicleta(1);
+		gestion.agregarVehiculo(bici);
 		
-		assertTrue(bici.agregarPaqueteABicicleta(paquete));
+		Destino destino1 = new Destino("Madero");
+		gestion.agregarDestino(destino1);
+		Paquete paquete = new Paquete(1, 7, 5, 6, 6, destino1);
+		gestion.agregarPaquete(paquete);
+		
+		bici.agregarDestinoAVehiculo(destino1);
+		
+		assertTrue(bici.agregarPaqueteAVehiculo(paquete));
 	}
 	
 	@Test
 	public void agregarPaqueteExitosoAAutomovil() {
 		GestionDeTransporte gestion = new GestionDeTransporte();
-		Automovil auto = new Automovil();
-		gestion.agregarAutomovil(auto);
+		Vehiculo auto = new Automovil(1);
+		gestion.agregarVehiculo(auto);
 		
 		Destino destino1 = new Destino("Madero");
 		Destino destino2 = new Destino("Capital");
 		Destino destino3 = new Destino("San Justo");
+		gestion.agregarDestino(destino1);
+		gestion.agregarDestino(destino2);
+		gestion.agregarDestino(destino3);
 		
-		auto.agregarDestinoAAutomovil(destino1);
-		auto.agregarDestinoAAutomovil(destino2);
-		auto.agregarDestinoAAutomovil(destino3);
+		auto.agregarDestinoAVehiculo(destino1);
+		auto.agregarDestinoAVehiculo(destino2);
+		auto.agregarDestinoAVehiculo(destino3);
 		
-		Paquete paquete = new Paquete(7, 5, 6, 6, destino1);
+		Paquete paquete = new Paquete(1, 7, 5, 6, 6, destino1);
+		gestion.agregarPaquete(paquete);
 		
 		assertEquals(3, auto.getDestinos().size());
-		assertTrue(auto.agregarPaqueteAAutomovil(paquete));
+		assertTrue(auto.agregarPaqueteAVehiculo(paquete));
 	}
 	
 	@Test
 	public void agregarPaqueteExitosoACamion() {
 		GestionDeTransporte gestion = new GestionDeTransporte();
-		Camion camion = new Camion();
-		gestion.agregarCamion(camion);
+		Vehiculo camion = new Camion(1);
+		gestion.agregarVehiculo(camion);
 		
 		Destino destino1 = new Destino("Madero");
 		Destino destino2 = new Destino("Capital");
 		Destino destino3 = new Destino("San Justo");
+		gestion.agregarDestino(destino1);
+		gestion.agregarDestino(destino2);
+		gestion.agregarDestino(destino3);
 		
-		camion.agregarDestinoACamion(destino1);
-		camion.agregarDestinoACamion(destino2);
-		camion.agregarDestinoACamion(destino3);
+		camion.agregarDestinoAVehiculo(destino1);
+		camion.agregarDestinoAVehiculo(destino2);
+		camion.agregarDestinoAVehiculo(destino3);
 		
-		Paquete paquete = new Paquete(7, 5, 6, 1000, destino1);
-		Paquete paquete2 = new Paquete(7, 5, 6, 15000, destino1);
+		Paquete paquete = new Paquete(1, 7, 5, 6, 1000, destino1);
+		Paquete paquete2 = new Paquete(2, 7, 5, 6, 15000, destino1);
+		gestion.agregarPaquete(paquete);
+		gestion.agregarPaquete(paquete2);
 		
-		assertTrue(camion.agregarPaqueteACamion(paquete));
-		assertTrue(camion.agregarPaqueteACamion(paquete2));
+		assertTrue(camion.agregarPaqueteAVehiculo(paquete));
+		assertTrue(camion.agregarPaqueteAVehiculo(paquete2));
 	}
 	
 	@Test
@@ -75,30 +88,35 @@ public class GestionDeTransporteTest {
 		
 		Destino destino1 = new Destino("Madero");
 		Destino destino2 = new Destino("Capital");
-		Bicicleta bici = new Bicicleta(destino1);
+		gestion.agregarDestino(destino1);
+		gestion.agregarDestino(destino2);
 		
-		gestion.agregarBicicleta(bici);
+		Vehiculo bici = new Bicicleta(1);
+		gestion.agregarVehiculo(bici);
 		
-		Paquete paquete = new Paquete(7, 5, 6, 6, destino2);
+		Paquete paquete = new Paquete(1, 7, 5, 6, 6, destino2);
+		gestion.agregarPaquete(paquete);
 		
-		assertFalse(bici.agregarPaqueteABicicleta(paquete));
+		assertFalse(bici.agregarPaqueteAVehiculo(paquete));
 	}
 	
 	@Test
 	public void queNoSePuedanAñadirDestinosRepetidosEnAutomovil() {
 		GestionDeTransporte gestion = new GestionDeTransporte();
-		Automovil auto = new Automovil();
-		gestion.agregarAutomovil(auto);
+		Vehiculo auto = new Automovil(1);
+		gestion.agregarVehiculo(auto);
 		
 		Destino destino1 = new Destino("Madero");
 		Destino destino2 = new Destino("Capital");
 		Destino destino3 = new Destino("San Justo");
+		gestion.agregarDestino(destino1);
+		gestion.agregarDestino(destino2);
+		gestion.agregarDestino(destino3);
 		
-		auto.agregarDestinoAAutomovil(destino1);
-		auto.agregarDestinoAAutomovil(destino2);
-		auto.agregarDestinoAAutomovil(destino2);
-		auto.agregarDestinoAAutomovil(destino3);
-		
+		auto.agregarDestinoAVehiculo(destino1);
+		auto.agregarDestinoAVehiculo(destino2);
+		auto.agregarDestinoAVehiculo(destino2);
+		auto.agregarDestinoAVehiculo(destino3);
 		
 		assertEquals(3, auto.getDestinos().size());
 	}
@@ -106,22 +124,27 @@ public class GestionDeTransporteTest {
 	@Test
 	public void agregarDosPaquetesAUnCamionQueNoExcedanLaCapacidadDePesoMaximo() {
 		GestionDeTransporte gestion = new GestionDeTransporte();
-		Camion camion = new Camion();
-		gestion.agregarCamion(camion);
+		Vehiculo camion = new Camion(1);
+		gestion.agregarVehiculo(camion);
 		
 		Destino destino1 = new Destino("Madero");
 		Destino destino2 = new Destino("Capital");
 		Destino destino3 = new Destino("San Justo");
+		gestion.agregarDestino(destino1);
+		gestion.agregarDestino(destino2);
+		gestion.agregarDestino(destino3);
 		
-		camion.agregarDestinoACamion(destino1);
-		camion.agregarDestinoACamion(destino2);
-		camion.agregarDestinoACamion(destino3);
+		camion.agregarDestinoAVehiculo(destino1);
+		camion.agregarDestinoAVehiculo(destino2);
+		camion.agregarDestinoAVehiculo(destino3);
 		
-		Paquete paquete = new Paquete(7, 5, 6, 1000, destino1);
-		Paquete paquete2 = new Paquete(7, 5, 6, 14000, destino1);
+		Paquete paquete = new Paquete(1, 7, 5, 6, 1000, destino1);
+		Paquete paquete2 = new Paquete(2, 7, 5, 6, 14000, destino1);
+		gestion.agregarPaquete(paquete);
+		gestion.agregarPaquete(paquete2);
 		
-		assertTrue(camion.agregarPaqueteACamion(paquete));
-		assertTrue(camion.agregarPaqueteACamion(paquete2));
+		assertTrue(camion.agregarPaqueteAVehiculo(paquete));
+		assertTrue(camion.agregarPaqueteAVehiculo(paquete2));
 		
 		double capacidadDePesoActualDelCamion = camion.getCapacidadDePesoActual();
 		

@@ -1,31 +1,29 @@
 package ar.edu.unlam.transporte.dom;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class GestionDeTransporte {
 
-	private List<Camion> camiones;
-	private List<Automovil> automoviles;
-	private List<Bicicleta> bicletas;
+	private Set<Vehiculo> vehiculos;
+	private Set<Destino> destinos;
+	private Set<Paquete> paquetes;
 	
 	public GestionDeTransporte() {
-		this.camiones = new ArrayList<Camion>();
-		this.automoviles = new ArrayList<Automovil>();
-		this.bicletas = new ArrayList<Bicicleta>();
+		this.vehiculos = new HashSet<Vehiculo>();
+		this.destinos = new HashSet<Destino>();
+		this.paquetes = new HashSet<Paquete>();
 	}
 
-	public boolean agregarCamion(Camion camion) {
-		return this.camiones.add(camion);
+	public boolean agregarVehiculo(Vehiculo vehiculo) {
+		return this.vehiculos.add(vehiculo);
 	}
 	
-	public boolean agregarAutomovil(Automovil auto) {
-		return this.automoviles.add(auto);
+	public boolean agregarDestino(Destino destino) {
+		return this.destinos.add(destino);
 	}
 	
-	public boolean agregarBicicleta(Bicicleta bicicleta) {
-		return this.bicletas.add(bicicleta);
+	public boolean agregarPaquete(Paquete paquete) {
+		return this.paquetes.add(paquete);
 	}
-	
-	
 }
